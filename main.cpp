@@ -339,13 +339,13 @@ extern "C" void* ThreadDumper(void*) {
     {
       vector<CAddrReport> v = db.GetAll();
       sort(v.begin(), v.end(), StatCompare);
-      FILE *f = fopen("dnsseed.dat.new","w+");
+      FILE *f = fopen("dnsseed.party.dat.new","w+");
       if (f) {
         {
           CAutoFile cf(f);
           cf << db;
         }
-        rename("dnsseed.dat.new", "dnsseed.dat");
+        rename("dnsseed.party.dat.new", "dnsseed.party.dat");
       }
       FILE *d = fopen("dnsseed.dump", "w");
       fprintf(d, "# address                                        good  lastSuccess    %%(2h)   %%(8h)   %%(1d)   %%(7d)  %%(30d)  blocks      svcs  version\n");
@@ -486,9 +486,9 @@ int main(int argc, char **argv) {
     fprintf(stderr, "No e-mail address set. Please use -m.\n");
     exit(1);
   }
-  FILE *f = fopen("dnsseed.dat","r");
+  FILE *f = fopen("dnsseed.party.dat","r");
   if (f) {
-    printf("Loading dnsseed.dat...");
+    printf("Loading dnsseed.party.dat...");
     CAutoFile cf(f);
     cf >> db;
     if (opts.fWipeBan)
