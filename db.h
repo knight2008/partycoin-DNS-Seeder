@@ -12,11 +12,13 @@
 
 #define MIN_RETRY 1000
 
-#define REQUIRE_VERSION 70001
+#define REQUIRE_VERSION 60015
 
 static inline int GetRequireHeight(const bool testnet = fTestNet)
 {
-    return testnet ? 500000 : 350000;
+// What are these checking ?
+//    return testnet ? 500000 : 350000;
+    return testnet ? 0 : 1200000;
 }
 
 std::string static inline ToString(const CService &ip) {
@@ -119,6 +121,10 @@ public:
   }
   int GetBanTime() const {
     if (IsGood()) return 0;
+	// todo:customize  clientVersion
+	// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2004/n1690.html
+	// https://stackoverflow.com/questions/5481539/what-does-t-double-ampersand-mean-in-c11
+    //if (clientVersion && clientVersion < 31900) { return 604800; }
     if (clientVersion && clientVersion < 31900) { return 604800; }
     if (stat1M.reliability - stat1M.weight + 1.0 < 0.15 && stat1M.count > 32) { return 30*86400; }
     if (stat1W.reliability - stat1W.weight + 1.0 < 0.10 && stat1W.count > 16) { return 7*86400; }

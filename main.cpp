@@ -32,10 +32,10 @@ public:
   const char *ipv6_proxy;
   std::set<uint64_t> filter_whitelist;
 
-  CDnsSeedOpts() : nThreads(96), nDnsThreads(4), nPort(53), mbox(NULL), ns(NULL), host(NULL), tor(NULL), fUseTestNet(false), fWipeBan(false), fWipeIgnore(false), ipv4_proxy(NULL), ipv6_proxy(NULL) {}
+  CDnsSeedOpts() : nThreads(96), nDnsThreads(4), nPort(53001), mbox(NULL), ns(NULL), host(NULL), tor(NULL), fUseTestNet(false), fWipeBan(false), fWipeIgnore(false), ipv4_proxy(NULL), ipv6_proxy(NULL) {}
 
   void ParseCommandLine(int argc, char **argv) {
-    static const char *help = "Bitcoin-seeder\n"
+    static const char *help = "Partycoin-seeder\n"
                               "Usage: %s -h <host> -n <ns> [-m <mbox>] [-t <threads>] [-p <port>]\n"
                               "\n"
                               "Options:\n"
@@ -397,17 +397,25 @@ extern "C" void* ThreadStats(void*) {
   return nullptr;
 }
 
-static const string mainnet_seeds[] = {"dnsseed.bluematt.me", "bitseed.xf2.org", "dnsseed.bitcoin.dashjr.org", "seed.bitcoin.sipa.be", ""};
-static const string testnet_seeds[] = {"testnet-seed.alexykot.me",
-                                       "testnet-seed.bitcoin.petertodd.org",
-                                       "testnet-seed.bluematt.me",
-                                       "testnet-seed.bitcoin.schildbach.de",
+//static const string mainnet_seeds[] = {"dnsseed.bluematt.me", "bitseed.xf2.org", "dnsseed.bitcoin.dashjr.org", "seed.bitcoin.sipa.be", ""};
+static const string mainnet_seeds[] = {"sipa.partycoin.net", "bert.partycoin.info", "matt.party-coin.com", ""};
+//  {"partycoin.net",  " sipa.partycoin.net "},		uk.bitmark.one
+//  {"partycoin.info", " bert.partycoin.info "},	zappa.bitmark.one
+//  {"party-coin.com", " matt.party-coin.com "}
+static const string testnet_seeds[] = {"testnet-seed.partycoin.net",
+                                       "testnet-seed.partycoin.info",
+                                       "testnet-seed.party-coin.com",
                                        ""};
+//static const string testnet_seeds[] = {"testnet-seed.alexykot.me",
+//                                       "testnet-seed.bitcoin.petertodd.org",
+//                                       "testnet-seed.bluematt.me",
+//                                       "testnet-seed.bitcoin.schildbach.de",
+//                                       ""};
 static const string *seeds = mainnet_seeds;
 
 extern "C" void* ThreadSeeder(void*) {
   if (!fTestNet){
-    db.Add(CService("kjy2eqzk4zwi5zd3.onion", 8333), true);
+    db.Add(CService("kjy2eqzk4zwi5zd3.onion", 7028), true);
   }
   do {
     for (int i=0; seeds[i] != ""; i++) {
@@ -459,10 +467,10 @@ int main(int argc, char **argv) {
   bool fDNS = true;
   if (opts.fUseTestNet) {
       printf("Using testnet.\n");
-      pchMessageStart[0] = 0x0b;
-      pchMessageStart[1] = 0x11;
-      pchMessageStart[2] = 0x09;
-      pchMessageStart[3] = 0x07;
+      pchMessageStart[0] = 0x1e;
+      pchMessageStart[1] = 0x3b;
+      pchMessageStart[2] = 0x3e;
+      pchMessageStart[3] = 0x1c;
       seeds = testnet_seeds;
       fTestNet = true;
   }
